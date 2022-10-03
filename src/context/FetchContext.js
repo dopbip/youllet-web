@@ -9,7 +9,7 @@ const FetchProvider = ({ children }) => {
   const authContext = useContext(AuthContext);
 
   const authAxios = axios.create({
-    baseURL: process.env.REACT_APP_API_URL
+    baseURL: 'localhost:3001' //process.env.REACT_APP_API_URL
   });
 
   authAxios.interceptors.request.use(
