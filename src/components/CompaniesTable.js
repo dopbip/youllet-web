@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { Table, Pagination, IconButton } from 'rsuite';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faUsers,
-    faEdit
-  } from '@fortawesome/free-solid-svg-icons';
+import { PencilIcon } from '@heroicons/react/20/solid'
+import { UserPlusIcon } from '@heroicons/react/20/solid'
+
 import { Column, HeaderCell, Cell } from "rsuite-table";
 import  "rsuite-table/dist/css/rsuite-table.css";
 import GradientBar from "./common/GradientBar";
@@ -100,8 +98,8 @@ const CompaniesTable = ({ companyArray }) => {
                     }
                       return (
                           <span>                               
-                               <IconButton icon={<FontAwesomeIcon icon={faEdit} color="grey" />} onClick={() => handleAction('edit')} /> | 
-                               <IconButton icon={<FontAwesomeIcon icon={faUsers} color="grey" />} onClick={() => handleAction('users')}  />
+                               <IconButton icon={<PencilIcon color="grey" />} onClick={() => handleAction('edit')} /> | 
+                               <IconButton icon={<UserPlusIcon color="grey" />} onClick={() => handleAction('users')}  />
                           </span>
                       );
                   }}

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Table, Pagination, IconButton, ButtonToolbar, Modal, Button } from "rsuite";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faUserLock,
-    faLock,
-    faUserEdit
-  } from '@fortawesome/free-solid-svg-icons';
+import { PencilIcon } from '@heroicons/react/20/solid'
+import { NoSymbolIcon } from '@heroicons/react/20/solid'
 import { Column, HeaderCell, Cell } from "rsuite-table";
 import  "rsuite-table/dist/css/rsuite-table.css";
 import GradientBar from "./common/GradientBar";
@@ -117,8 +113,7 @@ const CompanyUsersTable = ({ userArray, loginUserRole }) => {
                     <span>
                         <IconButton
                           icon={
-                            <FontAwesomeIcon
-                              icon={faUserEdit}
+                            <PencilIcon
                               color="grey"
                               onClick={() => handleAction("edit")}
                             />
@@ -127,7 +122,7 @@ const CompanyUsersTable = ({ userArray, loginUserRole }) => {
                         |{" "}
                         <IconButton
                           icon={
-                            <FontAwesomeIcon icon={faUserLock} color="red" />
+                            <NoSymbolIcon color="red" />
                           }
                           onClick={() => handleAction("bloc")}
                         />

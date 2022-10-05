@@ -8,7 +8,6 @@ import Sidebar from './components/Sidebar';
 const AppShell = ({ children }) => {
   return (
     <>
-      <GradientBar />
       <div className="flex">
         <div className="sm:w-15 px-2 sm:px-4 pt-3 bg-white">
           <Sidebar />
@@ -23,7 +22,7 @@ const AppShell = ({ children }) => {
           {/* <Footer /> */}
         </div>
       </div>
-    </>
+    </> 
   );
 };
 

@@ -4,11 +4,7 @@ import React, {
   useRef,
   useState
 } from 'react';
-import {
-  faCaretDown,
-  faSignOutAlt
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ArrowRightOnRectangleIcon } from '@heroicons/react/20/solid'
 import { AuthContext } from './../context/AuthContext';
 import defaultAvatar from './../images/defaultAvatar.png';
 
@@ -17,7 +13,7 @@ const DropdownItem = ({ item }) => (
     className="text-gray-700 flex items-center"
     onClick={item.onClick}
   >
-    <FontAwesomeIcon icon={item.icon} />
+    {/* <FontAwesomeIcon icon={item.icon} /> */}
     <p className="ml-2">{item.title}</p>
   </button>
 );
@@ -45,7 +41,7 @@ const AvatarDropdown = () => {
   const dropdownItems = [
     {
       title: 'Log Out',
-      icon: faSignOutAlt,
+      icon: ArrowRightOnRectangleIcon,
       onClick: auth.logout
     }
   ];
@@ -84,9 +80,9 @@ const AvatarDropdown = () => {
             {authState.userInfo.firstName}
           </p>
         </div>
-        <div className="mr-1 text-white">
+        {/* <div className="mr-1 text-white">
           <FontAwesomeIcon icon={faCaretDown} />
-        </div>
+        </div> */}
       </button>
 
       {dropdownOpen && (

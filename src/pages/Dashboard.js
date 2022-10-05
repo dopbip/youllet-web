@@ -6,11 +6,11 @@ import React, {
 import PageTitle from '../components/common/PageTitle';
 import DashboardMetric from './../components/DashboardMetric';
 import Card from '../components/common/Card';
-import {
-  faChartArea,
-  faDollarSign,
-  faUserPlus
-} from '@fortawesome/free-solid-svg-icons';
+// import {
+//   faChartArea,
+//   faDollarSign,
+//   faUserPlus
+// } from '@fortawesome/free-solid-svg-icons';
 import { FetchContext } from '../context/FetchContext';
 import { formatCurrency } from './../util';
 import DashboardChart from './../components/DashboardChart';
@@ -46,14 +46,14 @@ const Dashboard = () => {
                 value={formatCurrency(
                   dashboardData.salesVolume
                 )}
-                icon={faChartArea}
+                //icon={faChartArea}
               />
             </div>
             <div className="w-full sm:w-1/3 sm:ml-2 sm:mr-2 mb-4 sm:mb-0">
               <DashboardMetric
                 title="New Customers"
                 value={dashboardData.newCustomers}
-                icon={faUserPlus}
+                //icon={faUserPlus}
               />
             </div>
             <div className="w-full sm:w-1/3 sm:ml-2 mb-4 sm:mb-0">
@@ -62,7 +62,7 @@ const Dashboard = () => {
                 value={formatCurrency(
                   dashboardData.refunds
                 )}
-                icon={faDollarSign}
+                //icon={faDollarSign}
               />
             </div>
           </div>

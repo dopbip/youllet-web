@@ -1,111 +1,42 @@
 import React, { useEffect, useState, useContext } from "react";
-import classNames from "classnames";
-import Badge from "@material-ui/core/Badge";
+//import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Fragment } from 'react'
+import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
-  faChartLine,
-  faChartPie,
-  faBuilding,
-  faUsers,
-  faCheckCircle,
-  faUserTie,
-  faMoneyCheck,
-  faFileInvoice,
-  faUsersCog,
-} from "@fortawesome/free-solid-svg-icons";
+  Bars3BottomLeftIcon,
+  BellIcon,
+  CalendarIcon,
+  ChartBarIcon,
+  FolderIcon,
+  HomeIcon,
+  InboxIcon,
+  UsersIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Link, useLocation } from "react-router-dom";
 import logo from "./../images/logo.png";
 import { AuthContext } from "./../context/AuthContext";
 import { FetchContext } from "../context/FetchContext";
 import axios from "axios";
 
-// const userId = auth.authState.userInfo._id;
-// useEffect(() => {
-//   effect
-//   return () => {
-//     cleanup
-//   }
-// }, [input])
-const navItems = [
-  {
-    label: "Dashboard",
-    path: "dashboard",
-    icon: faChartLine,
-    hasBadge: false,
-    allowedRoles: ["admin", "clientAccess", "HRUser"],
-  },
-  {
-    label: "Companies",
-    path: "companies",
-    icon: faBuilding,
-    hasBadge: false,
-    allowedRoles: ["clientAccess", "admin"],
-  },
-  {
-    label: "Report",
-    path: "report",
-    icon: faChartPie,
-    hasBadge: false,
-    allowedRoles: ["admin"],
-  },
-  {
-    label: "Users",
-    path: "systemUsers",
-    icon: faUsers,
-    hasBadge: false,
-    allowedRoles: ["admin"],
-  },
-  {
-    label: "Approvals",
-    path: "approval",
-    icon: faCheckCircle,
-    hasBadge: false,
-    allowedRoles: ["admin"],
-  },
-  {
-    label: "HR",
-    path: "companiesHR",
-    icon: faUserTie,
-    hasBadge: true,
-    badgeName: "companiesHR",
-    allowedRoles: ["admin", "clientAccess"],
-  },
-  {
-    label: "Invoice",
-    path: "invoice",
-    icon: faFileInvoice,
-    hasBadge: true,
-    allowedRoles: ["HRUser", "admin"]
-  },
-  {
-    label:'Employees Credits',
-    path: 'companyUsers',
-    icon:faUsers,
-    hasBadge: true,
-    allowedRoles: ["HRUser"]
-  },
-  {
-    label: "Bank Details",
-    path:"bankDetails",
-    icon: faMoneyCheck,
-    hasBadge: false,
-    allowedRoles: ["admin", "HRUser"]
-  },
-  {
-    label: "Employees settings",
-    path: "employeesSettings",
-    icon: faUsersCog,
-    hasBadge: false,
-    allowedRoles: ["HRUser"]
-  }
-];
+const navigation = [
+  { name: 'Dashboard',path: "dashboard", icon: HomeIcon, current: true, allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Team', path: '#', icon: UsersIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Projects', path: '#', icon: FolderIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Calendar', path: '#', icon: CalendarIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Documents', path: '#', icon: InboxIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Reports', path: '#', icon: ChartBarIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
+]
 
-
-
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 const NavItemContainer = ({ children }) => <div>{children}</div>;
 
 const Sidebar = () => {
-  //const [pendingHRCount, setPendingHRCount] = useState();
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [badgeHRUserInvisibility, setBadgeHRUserInvisibility] = useState(true);
   const [badgeHRUserCount, setBadgeHRUSerCount] = useState(0);
   const [badgeInvoiceCount, setBadgeInvoiceCount] = useState(0);
@@ -129,7 +60,7 @@ const NavItem = ({ navItem }) => {
     <Link to={navItem.path} className={classes}>
       <div className="flex items-center">
         <div className="mr-0 sm:mr-4">
-          {navItem.hasBadge = (navItem.badgeName==='companiesHR') ? (
+          {/* {navItem.hasBadge = (navItem.badgeName==='companiesHR') ? (
             <Badge
               badgeContent={badgeHRUserCount}
               color="primary"
@@ -137,9 +68,9 @@ const NavItem = ({ navItem }) => {
             >
               <FontAwesomeIcon icon={navItem.icon} />
             </Badge>
-          ) : (
+          ) : ( */}
             <FontAwesomeIcon icon={navItem.icon} />
-          )}
+          {/* )} */}
         </div>
         <span className="hidden sm:block">{navItem.label}</span>
       </div>
@@ -184,22 +115,53 @@ const NavItem = ({ navItem }) => {
   }, [fetchContext.authAxios, _id, role]);
 
   return (
-    <section className="h-screen">
-      <div className="w-16 sm:w-24 m-auto">
-        {/* <img src={logo} rel="logo" alt="Logo" /> */}
-      </div>
-      <div className="mt-20">
-        {navItems.map((navItem, i) => (
-          <NavItemContainer key={i}>
-            {navItem.allowedRoles.includes(role) && (
-              <NavItem
-                navItem={navItem}
-              />
-            )}
-          </NavItemContainer>
-        ))}
-      </div>
-    </section>
+
+    <>
+       <div className="mt-5 h-0 flex-1 overflow-y-auto">
+          <nav className="space-y-1 px-2">
+            {navigation.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className={classNames(
+                  item.current
+                    ? 'bg-gray-900 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                )}
+              >
+                <item.icon
+                  className={classNames(
+                    item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+                    'mr-4 flex-shrink-0 h-6 w-6'
+                  )}
+                  aria-hidden="true"
+                />
+                {item.name}
+              </a>
+            ))}
+          </nav>
+        </div>
+    </>
+
+
+
+    // <section className="h-screen">
+    //   <div className="w-16 sm:w-24 m-auto">
+    //     {/* <img src={logo} rel="logo" alt="Logo" /> */}
+    //   </div>
+    //   <div className="mt-20">
+    //     {navigation.map((navItem, i) => (
+    //       <NavItemContainer key={i}>
+    //         {navItem.allowedRoles.includes(role) && (
+    //           <NavItem
+    //             navItem={navItem}
+    //           />
+    //         )}
+    //       </NavItemContainer>
+    //     ))}
+    //   </div>
+    // </section>
   );
 };
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { ArrowPathIcon } from '@heroicons/react/20/solid'
 //import classNames from 'classnames';
 
 const GradientButton = ({
@@ -23,7 +22,7 @@ const GradientButton = ({
     >
       {loading ? (
         <span className="flex items-center">
-          <FontAwesomeIcon icon={faCircleNotch} spin />
+          <ArrowPathIcon spin />
           <span className="ml-2">Loading...</span>
         </span>
       ) : (

@@ -3,11 +3,9 @@ import _ from 'lodash';
 import { useHistory } from "react-router";
 import { Table, Pagination, IconButton } from 'rsuite';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faUserEdit,
-    faUserTimes,
-    faUserPlus
-  } from '@fortawesome/free-solid-svg-icons';
+import { PencilIcon } from '@heroicons/react/20/solid'
+import { UserPlusIcon } from '@heroicons/react/20/solid'
+import { NoSymbolIcon } from '@heroicons/react/20/solid'
 import { Column, HeaderCell, Cell } from "rsuite-table";
 import  "rsuite-table/dist/css/rsuite-table.css";
 import GradientBar from "./common/GradientBar";
@@ -104,11 +102,11 @@ const CompaniesHRTable = ({ companyHRArray }) => {
                             <span> 
                               {_.has(rowData,'companyId') ? (
                                 <>
-                                  <IconButton icon={<FontAwesomeIcon icon={faUserEdit} color="grey" />} onClick={() => handleAction('edit')} />| 
-                                  <IconButton icon={<FontAwesomeIcon icon={faUserTimes} color="red" />} onClick={() => handleAction('block_user')}  /> 
+                                  <IconButton icon={<PencilIcon color="grey" />} onClick={() => handleAction('edit')} />| 
+                                  <IconButton icon={<FontAwesomeIcon icon={NoSymbolIcon} color="red" />} onClick={() => handleAction('block_user')}  /> 
                                 </>
                                 ) : (
-                                  <IconButton icon={<FontAwesomeIcon icon={faUserPlus} color="blue"  />} onClick={() => handleAction('add')} />
+                                  <IconButton icon={<UserPlusIcon color="blue"  />} onClick={() => handleAction('add')} />
                                 )}                              
                             </span>
                             
