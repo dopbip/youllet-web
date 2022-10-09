@@ -6,6 +6,7 @@ import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   Bars3BottomLeftIcon,
   BellIcon,
+  BuildingOfficeIcon,
   CalendarIcon,
   ChartBarIcon,
   FolderIcon,
@@ -22,12 +23,13 @@ import { FetchContext } from "../context/FetchContext";
 import axios from "axios";
 
 const navigation = [
-  { name: 'Dashboard',path: "dashboard", icon: HomeIcon, current: true, allowedRoles: ["admin", "clientAccess", "HRUser"] },
-  { name: 'Team', path: '#', icon: UsersIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
-  { name: 'Projects', path: '#', icon: FolderIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
-  { name: 'Calendar', path: '#', icon: CalendarIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
-  { name: 'Documents', path: '#', icon: InboxIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
-  { name: 'Reports', path: '#', icon: ChartBarIcon, current: false,  allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Dashboard',path: "dashboard", icon: HomeIcon, allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Users', path: 'systemUsers', icon: UsersIcon, allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Employees', path: 'companyUsers', icon: UsersIcon, allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Companies', path: 'companies', icon: BuildingOfficeIcon, allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Calendar', path: '#', icon: CalendarIcon, allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Documents', path: '#', icon: InboxIcon, allowedRoles: ["admin", "clientAccess", "HRUser"] },
+  { name: 'Reports', path: 'report', icon: ChartBarIcon, allowedRoles: ["admin", "clientAccess", "HRUser"] },
 ]
 
 function classNames(...classes) {
@@ -50,30 +52,31 @@ const Sidebar = () => {
 const NavItem = ({ navItem }) => {
   const location = useLocation();
   const isCurrentRoute = location.pathname === `/${navItem.path}`;
-  const classes = classNames({
-    "px-2 sm:px-6 justify-center sm:justify-start py-3 rounded-full flex": true,
-    "text-gray-600 hover:text-blue-500 transform hover:translate-x-1 transition ease-in-out duration-100":
-      !isCurrentRoute,
-    "bg-gradient text-gray-100 shadow-lg": isCurrentRoute,
-  });
+  // const classes = classNames({
+  //   "px-2 sm:px-6 justify-center sm:justify-start py-3 rounded-full flex": true,
+  //   "text-gray-600 hover:text-blue-500 transform hover:translate-x-1 transition ease-in-out duration-100":
+  //     !isCurrentRoute,
+  //   "bg-gradient text-gray-100 shadow-lg": isCurrentRoute,
+  // });
   return (
-    <Link to={navItem.path} className={classes}>
-      <div className="flex items-center">
-        <div className="mr-0 sm:mr-4">
-          {/* {navItem.hasBadge = (navItem.badgeName==='companiesHR') ? (
-            <Badge
-              badgeContent={badgeHRUserCount}
-              color="primary"
-              invisible={badgeHRUserInvisibility}
-            >
-              <FontAwesomeIcon icon={navItem.icon} />
-            </Badge>
-          ) : ( */}
-            <FontAwesomeIcon icon={navItem.icon} />
-          {/* )} */}
-        </div>
-        <span className="hidden sm:block">{navItem.label}</span>
-      </div>
+    <Link to={navItem.path} >
+      <a
+        key={navItem.name}
+        href={navItem.path}
+        className={classNames(
+          isCurrentRoute ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+          'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+        )}
+      >
+        <navItem.icon
+          className={classNames(
+            isCurrentRoute ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+            'mr-3 flex-shrink-0 h-6 w-6'
+          )}
+          aria-hidden="true"
+        />
+        {navItem.name}
+      </a>
     </Link>
   );
 };
@@ -117,30 +120,46 @@ const NavItem = ({ navItem }) => {
   return (
 
     <>
-       <div className="mt-5 h-0 flex-1 overflow-y-auto">
-          <nav className="space-y-1 px-2">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className={classNames(
-                  item.current
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                  'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                )}
-              >
-                <item.icon
-                  className={classNames(
-                    item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
-                    'mr-4 flex-shrink-0 h-6 w-6'
-                  )}
-                  aria-hidden="true"
-                />
-                {item.name}
-              </a>
-            ))}
-          </nav>
+       {/* Static sidebar for desktop */}
+        <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+          
+          <div className="flex min-h-0 flex-1 flex-col bg-gray-800">
+            <div className="flex h-16 flex-shrink-0 items-center bg-gray-900 px-4">
+              <img
+                className="h-8 w-auto"
+                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                alt="Your Company"
+              />
+            </div>
+            <div className="flex flex-1 flex-col overflow-y-auto">
+              <nav className="flex-1 space-y-1 px-2 py-4">
+                {navigation.map((navItem) => (
+                  navItem.allowedRoles.includes(role) && (
+                    <NavItem
+                      navItem={navItem}
+                    />
+                  )
+                  // <a
+                  //   key={item.name}
+                  //   href={item.href}
+                  //   className={classNames(
+                  //     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  //     'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                  //   )}
+                  // >
+                  //   <item.icon
+                  //     className={classNames(
+                  //       item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+                  //       'mr-3 flex-shrink-0 h-6 w-6'
+                  //     )}
+                  //     aria-hidden="true"
+                  //   />
+                  //   {item.name}
+                  // </a>
+                ))}
+              </nav>
+            </div>
+          </div>
         </div>
     </>
 
